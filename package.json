@@ -18,6 +18,6 @@
   },
   "homepage": "https://github.com/rchaser53/puppeteer-playground#readme",
   "dependencies": {
-    "puppeteer": "^0.9.0"
+    "puppeteer": "^0.10.2"
   }
 }

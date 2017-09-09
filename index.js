@@ -4,22 +4,9 @@ const puppeteer = require('puppeteer');
 
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
-  await page.goto('http://kaznews.xyz/archives/240');
+  let _ = await page.goto('http://marukome.sblo.jp/');
 
-  const mouse = page.mouse;
-  await mouse.move(120, 1000)
+  const img = await page.$eval('.text>img', e => e.src);
 
-  await page.focus('.images-img>img')
-  await page.screenshot({
-          path: 'example.png',
-          fullPage: true
-          // clip: {
-            // x: 150,
-            // y: 1000,
-            // width: 1000,
-            // height: 1000
-          // }
-  });
-
-  browser.close();
+  browser.close();  
 })();
