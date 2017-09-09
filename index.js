@@ -1,4 +1,6 @@
 const puppeteer = require('puppeteer');
+const { spawnSync } = require('child_process');
+const fs = require('fs');
 
 (async () => {
 
@@ -6,7 +8,9 @@ const puppeteer = require('puppeteer');
   const page = await browser.newPage();
   let _ = await page.goto('http://marukome.sblo.jp/');
 
-  const img = await page.$eval('.text>img', e => e.src);
+  const imgSrc = await page.$eval('.text>img', e => e.src);
+
+  spawnSync('curl', [imgSrc, '-o', 'hoge.jpg']);
 
   browser.close();  
 })();
