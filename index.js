@@ -2,15 +2,30 @@ const puppeteer = require('puppeteer');
 const { spawnSync } = require('child_process');
 const fs = require('fs');
 
-(async () => {
+const getImages = async (src, index) => {
+  return spawnSync('curl', [src, '-o', `${index}.jpg`])
+}
 
+const getAllJpegInPage = async (url) => {
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
-  let _ = await page.goto('http://marukome.sblo.jp/');
+  let _ = await page.goto(url);
 
-  const imgSrc = await page.$eval('.text>img', e => e.src);
+  const elementHandles = await page.$$('img', e => e);
 
-  spawnSync('curl', [imgSrc, '-o', 'hoge.jpg']);
+  const srcs = await Promise.all(elementHandles.map((elementHandle) => {
+    return elementHandle.evaluate((e => e.src));
+  }));
+
+  await Promise.all(
+    srcs.filter((src) => {
+      return src.includes('.jpg')
+    }).map((src, index) => {
+      return getImages(src, index);
+    })
+  )
 
   browser.close();  
-})();
+};
+
+getAllJpegInPage('http://marukome.sblo.jp/');
