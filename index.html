@@ -3,12 +3,19 @@
   <head>
     <title>ny-n</title>
     <script>
-      let hoge = document.querySelector('title')
-
-      // console.log(hoge)
-      // console.log(hoge)
-      document.title = Date.now()
-      // hoge = Date.now()
+      setInterval(() => {
+        fetch('http://localhost:3000/btc_usd')
+        .then(ret => {
+          return ret.text()
+        })
+        .then(ret => {
+          document.title = ret
+          console.log(ret)
+        })
+        .catch(err => {
+          console.error(err)
+        })
+      }, 60000)
     </script>
   </head>
   <body></body>

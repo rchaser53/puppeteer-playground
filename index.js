@@ -11,21 +11,15 @@ const getAllJpegInPage = async (url) => {
   const page = await browser.newPage();
   let _ = await page.goto(url);
 
-  const elementHandles = await page.$$('img', e => e);
+  const elementHandles = await page.$$('#last_last', e => e);
 
   const srcs = await Promise.all(elementHandles.map((elementHandle) => {
-    return elementHandle.evaluate((e => e.src));
+    return elementHandle.evaluate((e => e.innerText));
   }));
 
-  await Promise.all(
-    srcs.filter((src) => {
-      return src.includes('.jpg')
-    }).map((src, index) => {
-      return getImages(src, index);
-    })
-  )
+  srcs.pop()
 
   browser.close();  
 };
 
-getAllJpegInPage('http://marukome.sblo.jp/');
+getAllJpegInPage('https://jp.investing.com/currencies/btc-usd');
