@@ -9,28 +9,62 @@ const express = require('express')
 const app = express()
 const server = require('http').createServer(app)
 
+let browser, page;
 app.get('/btc_usd', async (req, res) => {
   try {
+    browser = await createBrowser(browser)
+    page = await createPage(page, browser)
+
+    const currencyRate = await getCurrentBtcToUsd(page, 'https://jp.investing.com/currencies/btc-usd', 'last_last')
+
     res.header('Access-Control-Allow-Origin', '*')
-    const currencyRate = await getCurrentBtcToUsd('https://jp.investing.com/currencies/btc-usd', 'last_last');
     res.send(currencyRate)
   } catch (err) {
+    await closeBrowser(browser)
     console.error(err)
   }
 })
 
-const getCurrentBtcToUsd = async (url, id) => {
-  const browser = await puppeteer.launch();
-  const page = await browser.newPage();
-  let _ = await page.goto(url);
+const closeBrowser = (browser) => {
+  if (browser != null) browser.close()
+  browser = null
+}
 
-  const elementHandles = await page.$$(`#${id}`, e => e);
+const createBrowser = async (browser) => {
+  try {
+    return (browser == null)
+      ? await puppeteer.launch()
+      : await browser
+  } catch (err) {
+    throw new Error(err)
+  }
+}
 
-  const srcs = await Promise.all(elementHandles.map((elementHandle) => {
-    return elementHandle.evaluate((e => e.innerText));
-  }));
+const createPage = async (page, browser) => {
+  try {
+    return (page == null)
+    ? await browser.newPage()
+    : await page
+  } catch (err) {
+    throw new Error(err)
+  }
+}
 
-  return srcs.pop()
+const getCurrentBtcToUsd = async (page, url, id) => {
+  try {
+    let _ = await page.goto(url, {
+      timeout: 500000
+    });
+
+    const elementHandles = await page.$$(`#${id}`, e => e);
+
+    const srcs = await Promise.all(elementHandles.map((elementHandle) => {
+      return elementHandle.evaluate((e => e.innerText));
+    }));
+    return srcs.pop()
+  } catch (err) {
+    throw new Error(err)
+  }
 };
 
 app.get('/index', (req, res) => {
