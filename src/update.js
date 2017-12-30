@@ -11,11 +11,18 @@ const recreateChartImage = (id, targetSrc) => {
   document.body.appendChild(newImage)
 }
 
+const updateTitle = (nextValue) => {
+  document.title = nextValue
+  localStorage.setItem('btcUsdCash', nextValue)
+}
+
 window.onload = () => {
+  document.title = localStorage.getItem('btcUsdCash') || ''
+
   setInterval(async () => {
     try {
       const fetchObject = await fetch('http://localhost:3000/btc_usd')
-      document.title = await fetchObject.text()
+      updateTitle(await fetchObject.text())
 
       recreateChartImage('chart', 'img/chart.png')
     } catch (err) {
