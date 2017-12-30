@@ -3,17 +3,16 @@
   <head>
     <title>nya-n</title>
     <script>
-
-      const recreateChartImage = () => {
-        let chart = document.querySelector('#chart')
+      const recreateChartImage = (id, targetSrc) => {
+        let chart = document.querySelector(`#${id}`)
         if (chart != null) {
           document.body.removeChild(chart)
           chart = null
         }
 
         let newImage = document.createElement('img')
-        newImage.src = `img/chart.png?${Date.now()}`
-        newImage.id = 'chart'
+        newImage.src = `${targetSrc}?${Date.now()}`
+        newImage.id = id
         document.body.appendChild(newImage)
       }
 
@@ -23,11 +22,11 @@
             const fetchObject = await fetch('http://localhost:3000/btc_usd')
             document.title = await fetchObject.text()
 
-            recreateChartImage()
+            recreateChartImage('chart', 'img/chart.png')
           } catch (err) {
             console.error(err)
           }
-        }, 40000)
+        }, 60000)
       }
     </script>
   </head>

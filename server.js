@@ -19,6 +19,7 @@ app.get('/btc_usd', async (req, res) => {
     page = await createPage(page, browser)
 
     const currencyRate = await getCurrentBtcToUsd(page, 'https://jp.investing.com/currencies/btc-usd', 'last_last')
+    await page.waitForSelector(chartSelector, { timeout: 60000 })
     const elementHandle = await page.$(chartSelector, e => e);
   
     await elementHandle.screenshot({
