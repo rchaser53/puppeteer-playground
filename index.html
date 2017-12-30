@@ -3,20 +3,21 @@
   <head>
     <title>ny-n</title>
     <script>
-      setInterval(() => {
-        fetch('http://localhost:3000/btc_usd')
-        .then(ret => {
-          return ret.text()
-        })
-        .then(ret => {
-          document.title = ret
-          console.log(ret)
-        })
-        .catch(err => {
-          console.error(err)
-        })
-      }, 60000)
+      window.onload = () => {
+        setInterval(async () => {
+          try {
+            const fetchObject = await fetch('http://localhost:3000/btc_usd')
+            document.title = await fetchObject.text()
+            document.querySelector('#chart').src = 'img/chart.png'
+
+          } catch (err) {
+            console.error(err)
+          }
+        }, 60000)
+      }
     </script>
   </head>
-  <body></body>
+  <body>
+    <img id="chart" src="" />
+  </body>
 </html>

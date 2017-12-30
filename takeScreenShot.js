@@ -9,7 +9,7 @@ const getAllJpegInPage = async (url) => {
   const elementHandle = await page.$('.highcharts-container', e => e);
 
   await elementHandle.screenshot({
-    path: 'nyan.png'
+    path: 'img/chart.png'
   })
 
   browser.close();  

@@ -7,7 +7,10 @@ const fs = require('fs');
 const express = require('express')
 
 const app = express()
-const server = require('http').createServer(app)
+app.use('/img', express.static(path.join(__dirname, 'img')));
+
+const timeoutTime = 60000
+const chartSelector = '#highcharts-0'
 
 let browser, page;
 app.get('/btc_usd', async (req, res) => {
@@ -16,7 +19,11 @@ app.get('/btc_usd', async (req, res) => {
     page = await createPage(page, browser)
 
     const currencyRate = await getCurrentBtcToUsd(page, 'https://jp.investing.com/currencies/btc-usd', 'last_last')
-
+    const elementHandle = await page.$(chartSelector, e => e);
+  
+    await elementHandle.screenshot({
+      path: 'img/chart.png'
+    })
     res.header('Access-Control-Allow-Origin', '*')
     res.send(currencyRate)
   } catch (err) {
@@ -33,7 +40,9 @@ const closeBrowser = (browser) => {
 const createBrowser = async (browser) => {
   try {
     return (browser == null)
-      ? await puppeteer.launch()
+      ? await puppeteer.launch({
+        timeout: timeoutTime
+      })
       : await browser
   } catch (err) {
     throw new Error(err)
@@ -53,7 +62,7 @@ const createPage = async (page, browser) => {
 const getCurrentBtcToUsd = async (page, url, id) => {
   try {
     let _ = await page.goto(url, {
-      timeout: 500000
+      timeout: timeoutTime
     });
     return await page.$eval(`#${id}`, el => el.innerText)
   } catch (err) {
@@ -65,6 +74,7 @@ app.get('/index', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'))
 })
 
+const server = require('http').createServer(app)
 server.listen(3000, () => {
   console.log('run server')
 })
