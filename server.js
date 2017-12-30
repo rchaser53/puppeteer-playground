@@ -28,7 +28,8 @@ app.get('/btc_usd', async (req, res) => {
     res.header('Access-Control-Allow-Origin', '*')
     res.send(currencyRate)
   } catch (err) {
-    await closeBrowser(browser)
+    browser = await closeBrowser(browser)
+    page = null
     console.error(err)
   }
 })
@@ -36,6 +37,7 @@ app.get('/btc_usd', async (req, res) => {
 const closeBrowser = (browser) => {
   if (browser != null) browser.close()
   browser = null
+  return browser
 }
 
 const createBrowser = async (browser) => {
