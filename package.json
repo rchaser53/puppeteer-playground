@@ -18,7 +18,7 @@
   },
   "homepage": "https://github.com/rchaser53/puppeteer-playground#readme",
   "dependencies": {
-    "puppeteer": "^0.10.2"
+    "puppeteer": "0.13.0"
   },
   "devDependencies": {
     "express": "^4.16.2"
