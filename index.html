@@ -1,23 +1,37 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>ny-n</title>
+    <title>nya-n</title>
     <script>
+
+      const recreateChartImage = () => {
+        let chart = document.querySelector('#chart')
+        if (chart != null) {
+          document.body.removeChild(chart)
+          chart = null
+        }
+
+        let newImage = document.createElement('img')
+        newImage.src = `img/chart.png?${Date.now()}`
+        newImage.id = 'chart'
+        document.body.appendChild(newImage)
+      }
+
       window.onload = () => {
         setInterval(async () => {
           try {
             const fetchObject = await fetch('http://localhost:3000/btc_usd')
             document.title = await fetchObject.text()
-            document.querySelector('#chart').src = 'img/chart.png'
 
+            recreateChartImage()
           } catch (err) {
             console.error(err)
           }
-        }, 60000)
+        }, 40000)
       }
     </script>
   </head>
   <body>
-    <img id="chart" src="" />
+    <img id="chart" src="img/chart.png" />
   </body>
 </html>
