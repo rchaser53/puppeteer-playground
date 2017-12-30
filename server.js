@@ -55,13 +55,8 @@ const getCurrentBtcToUsd = async (page, url, id) => {
     let _ = await page.goto(url, {
       timeout: 500000
     });
-
-    const elementHandles = await page.$$(`#${id}`, e => e);
-
-    const srcs = await Promise.all(elementHandles.map((elementHandle) => {
-      return elementHandle.evaluate((e => e.innerText));
-    }));
-    return srcs.pop()
+    const elementHandle = await page.$(`#${id}`, e => e);
+    return await Promise.resolve(elementHandle.evaluate((e => e.innerText)))
   } catch (err) {
     throw new Error(err)
   }
