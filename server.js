@@ -8,6 +8,7 @@ const express = require('express')
 
 const app = express()
 app.use('/img', express.static(path.join(__dirname, 'img')));
+app.use('/src', express.static(path.join(__dirname, 'src')));
 
 const timeoutTime = 60000
 const chartSelector = '#highcharts-0'
