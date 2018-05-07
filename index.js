@@ -11,13 +11,11 @@ const getAllJpegInPage = async (url) => {
   const page = await browser.newPage();
   let _ = await page.goto(url);
 
-  const elementHandles = await page.$$('#last_last', e => e);
+  const texts = await page.$eval('#last_last', e => {
+    return e.innerText
+  });
 
-  const srcs = await Promise.all(elementHandles.map((elementHandle) => {
-    return elementHandle.evaluate((e => e.innerText));
-  }));
-
-  srcs.pop()
+  console.log(texts)
 
   browser.close();  
 };
