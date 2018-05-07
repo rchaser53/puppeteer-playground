@@ -1,0 +1,11 @@
+version: "3"
+services:
+  node:
+    # container_name: node
+    image: puppetter/node
+    tty: true
+    working_dir: /home/app/workspace
+    volumes:
+      - ./:/home/app/workspace
+    # ports:
+    #  - "3100:3100"
