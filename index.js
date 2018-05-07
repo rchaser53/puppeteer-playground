@@ -15,8 +15,15 @@ const getAllJpegInPage = async (url) => {
   const texts = await page.$eval('#last_last', (e) => {
     return e.innerText
   });
-
   console.log(texts)
+
+  const handle = await page.$('#last_last', (e) => {
+    return e
+  });
+  await handle.screenshot({
+    path: './img/last_last.jpg',
+    quality: 30
+  })
 
   await page.screenshot({
     path: './img/overAll.jpg',
