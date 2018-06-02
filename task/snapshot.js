@@ -1,12 +1,7 @@
 const puppeteer = require('puppeteer');
-const { spawnSync } = require('child_process');
 const fs = require('fs');
 
-const getImages = async (src, index) => {
-  return spawnSync('curl', [src, '-o', `${index}.jpg`])
-}
-
-const getAllJpegInPage = async (url) => {
+const getJpegInPage = async (url) => {
   try {
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
@@ -37,4 +32,4 @@ const getAllJpegInPage = async (url) => {
   }
 };
 
-getAllJpegInPage('https://jp.investing.com/currencies/btc-usd');
+getJpegInPage('https://jp.investing.com/currencies/btc-usd');
