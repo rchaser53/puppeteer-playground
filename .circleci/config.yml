@@ -6,4 +6,5 @@ jobs:
     steps:
       - checkout
       - run: docker pull alekzonder/puppeteer:1.1.1
+      - run: chmod 777 img
       - run: sh run.sh
