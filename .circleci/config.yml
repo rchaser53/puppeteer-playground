@@ -1,0 +1,9 @@
+version: 2
+jobs:
+  build:
+    machine: true
+    working_directory: ~/workspace
+    steps:
+      - checkout
+      - run: docker pull alekzonder/puppeteer:1.1.1
+      - run: sh run.sh
